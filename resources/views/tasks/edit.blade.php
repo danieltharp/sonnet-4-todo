@@ -13,6 +13,40 @@
 
     <div class="py-12">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
+            <!-- Status Toggle Form (moved outside main form) -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+                <div class="p-6">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Current Status:</p>
+                                <p class="text-sm text-gray-800">
+                                    @if($task->isComplete())
+                                        <span class="text-green-600">✓ Complete</span> - Completed {{ $task->completed_at->format('M j, Y \a\t g:i A') }}
+                                    @else
+                                        <span class="text-yellow-600">○ Incomplete</span> - Created {{ $task->created_at->format('M j, Y \a\t g:i A') }}
+                                    @endif
+                                </p>
+                            </div>
+                            <form action="{{ route('tasks.toggle', $task) }}" method="POST" class="inline">
+                                @csrf
+                                @method('PATCH')
+                                @if($task->isComplete())
+                                    <button type="submit" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded text-sm">
+                                        Mark as Incomplete
+                                    </button>
+                                @else
+                                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded text-sm">
+                                        Mark as Complete
+                                    </button>
+                                @endif
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Update Form -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <form method="POST" action="{{ route('tasks.update', $task) }}">
@@ -45,37 +79,6 @@
                                 rows="4" 
                                 placeholder="Enter task description...">{{ old('description', $task->description) }}</textarea>
                             <x-input-error class="mt-2" :messages="$errors->get('description')" />
-                        </div>
-
-                        <!-- Status Info -->
-                        <div class="mb-6">
-                            <div class="bg-gray-50 p-4 rounded-lg">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-600">Current Status:</p>
-                                        <p class="text-sm text-gray-800">
-                                            @if($task->isComplete())
-                                                <span class="text-green-600">✓ Complete</span> - Completed {{ $task->completed_at->format('M j, Y \a\t g:i A') }}
-                                            @else
-                                                <span class="text-yellow-600">○ Incomplete</span> - Created {{ $task->created_at->format('M j, Y \a\t g:i A') }}
-                                            @endif
-                                        </p>
-                                    </div>
-                                    <form action="{{ route('tasks.toggle', $task) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('PATCH')
-                                        @if($task->isComplete())
-                                            <button type="submit" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded text-sm">
-                                                Mark as Incomplete
-                                            </button>
-                                        @else
-                                            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded text-sm">
-                                                Mark as Complete
-                                            </button>
-                                        @endif
-                                    </form>
-                                </div>
-                            </div>
                         </div>
 
                         <!-- Buttons -->
