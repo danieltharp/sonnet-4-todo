@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    /* Ensure all links have proper colors and visibility */
+    a:not([class*="bg-"]):not([class*="text-"]) {
+        @apply text-blue-600 hover:text-blue-800 underline;
+    }
+    
+    /* Fix any potential white text issues in navigation */
+    nav a:not([class*="bg-"]):not([class*="text-"]) {
+        @apply text-gray-700 hover:text-gray-900 no-underline;
+    }
+    
+    /* Ensure form links are properly styled */
+    form a:not([class*="bg-"]):not([class*="text-"]) {
+        @apply text-blue-600 hover:text-blue-800 underline;
+    }
+}
